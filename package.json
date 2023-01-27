@@ -1,6 +1,6 @@
 {
     "name": "unstyled-textarea-autosize",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "Unstyled textarea component for React which grows with content.",
     "main": "dist/index.js",
     "module": "dist/index.js",

@@ -11,9 +11,9 @@ import { useRefWithForwarding } from "use-ref-with-forwarding";
 const VALID_CTRL_KEYS = ["c", "v", "x", "z", "r", "ArrowLeft", "ArrowRight"];
 
 export type UnstyledTextareaAutosizeProps = ComponentProps<"div"> & {
-    readOnly: boolean;
-    value: string;
-    onValueChange: (value: string) => void;
+    readOnly?: boolean;
+    value?: string;
+    onValueChange?: (value: string) => void;
 };
 
 export const UnstyledTextareaAutosize = forwardRef<
@@ -35,6 +35,9 @@ export const UnstyledTextareaAutosize = forwardRef<
             console.error("unstyled-textarea-autosize: unexpected null ref");
             return;
         }
+        if (value === undefined) {
+            return;
+        }
         if (ref.current.innerText !== value) {
             ref.current.innerText = value;
         }
@@ -53,7 +56,7 @@ export const UnstyledTextareaAutosize = forwardRef<
 
             // propagate the value change
             const newValue = ref.current.innerText;
-            if (newValue !== value) {
+            if (newValue !== value && onValueChange) {
                 onValueChange(newValue);
             }
 
