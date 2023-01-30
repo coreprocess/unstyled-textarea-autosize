@@ -1,0 +1,17 @@
+name: publish
+on:
+    workflow_dispatch:
+    push:
+        branches:
+            - publish
+jobs:
+    publish:
+        runs-on: ubuntu-latest
+        environment: publish
+        steps:
+            - uses: actions/checkout@v2
+            - run: yarn
+            - run: yarn build
+            - run: yarn publish
+              env:
+                  NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
