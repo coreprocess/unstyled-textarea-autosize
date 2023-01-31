@@ -1,11 +1,18 @@
 {
     "name": "unstyled-textarea-autosize",
-    "version": "1.0.3",
+    "version": "1.0.4",
     "description": "An unstyled multi-line text component for React that adapts to its content.",
     "main": "dist/index.js",
     "module": "dist/index.js",
     "types": "dist/index.d.ts",
-    "repository": "https://github.com/teamrevin/unstyled-textarea-autosize",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/teamrevin/unstyled-textarea-autosize.git"
+    },
+    "homepage": "https://github.com/teamrevin/unstyled-textarea-autosize#readme",
+    "bugs": {
+        "url": "https://github.com/teamrevin/unstyled-textarea-autosize/issues"
+    },
     "author": "Niklas Salmoukas",
     "license": "MIT",
     "keywords": [
