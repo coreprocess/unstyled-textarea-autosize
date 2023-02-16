@@ -1448,10 +1448,10 @@ uri-js@^4.2.2:
   dependencies:
     punycode "^2.1.0"
 
-use-ref-with-forwarding@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/use-ref-with-forwarding/-/use-ref-with-forwarding-1.0.1.tgz#3b4076541cfba814b0f0171760a8cf8b75fcdb74"
-  integrity sha512-tl+FP1/VvOpzZq6TCIK5NvudSsKB2n689i3ao55wVAZ9vWeTZvpOr82tQA7jumNA/8BVIjn68s4qBRvt916ttw==
+use-ref-with-forwarding@^1.0.5:
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/use-ref-with-forwarding/-/use-ref-with-forwarding-1.0.5.tgz#0faaebae3f9e639d9402bd1b8cbcf4c9f2e530b7"
+  integrity sha512-kUVEowN2arKlEgvpNVXQ4FO/H0vY9SyWXGDRXgbYzj4fWP2STMInFUFbaXnAHnW1utBnzBUmB9y2ZDe9FpjZPQ==
 
 which-boxed-primitive@^1.0.2:
   version "1.0.2"

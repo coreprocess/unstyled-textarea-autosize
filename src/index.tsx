@@ -8,54 +8,120 @@ import React, {
 } from "react";
 import { useRefWithForwarding } from "use-ref-with-forwarding";
 
-const INVALID_CTRL_KEYS = ["b", "i", "u"];
-
 export type UnstyledTextareaAutosizeProps = ComponentProps<"div"> & {
     readOnly?: boolean;
     value?: string;
+    initialValue?: string;
     onValueChange?: (value: string) => void;
 };
 
+export type UnstyledTextareaAutosizeElement = HTMLDivElement & {
+    value: string;
+};
+
+const INVALID_CTRL_KEYS = ["b", "i", "u"];
+
+function initElement(element: UnstyledTextareaAutosizeElement | null) {
+    if (element) {
+        Object.defineProperty(element, "value", {
+            get: function () {
+                return element.innerText;
+            },
+            set: function (newValue) {
+                element.innerText = newValue;
+            },
+        });
+    }
+}
+
+function isElementInitialized(
+    element: UnstyledTextareaAutosizeElement | null
+): element is UnstyledTextareaAutosizeElement {
+    if (!element) {
+        console.error("unstyled-textarea-autosize: unexpected null ref");
+        return false;
+    }
+    if (Object.getOwnPropertyDescriptor(element, "value") === undefined) {
+        console.error(
+            "unstyled-textarea-autosize: value property not configured"
+        );
+        return false;
+    }
+    return true;
+}
+
 export const UnstyledTextareaAutosize = forwardRef<
-    HTMLDivElement | null,
+    UnstyledTextareaAutosizeElement | null,
     UnstyledTextareaAutosizeProps
 >(function UnstyledTextareaAutosize(
-    { readOnly, value, onValueChange, onInput, onKeyDown, ...props },
+    {
+        readOnly,
+        value,
+        initialValue,
+        onValueChange,
+        onInput,
+        onKeyDown,
+        ...props
+    },
     outerRef
 ) {
+    // initialize dom element with the value property
+
     // reference to the root element
-    const ref = useRefWithForwarding<HTMLDivElement | null>(
+    const ref = useRefWithForwarding<UnstyledTextareaAutosizeElement | null>(
         null,
-        outerRef ? [outerRef] : []
+        [initElement, outerRef]
     );
 
-    // update the div element when the value changes
+    // update the text when the value changes (controlled mode)
     useEffect(() => {
-        if (!ref.current) {
-            console.error("unstyled-textarea-autosize: unexpected null ref");
+        // check if reference is initialized
+        if (!isElementInitialized(ref.current)) {
             return;
         }
+
+        // don't update if value is undefined
         if (value === undefined) {
             return;
         }
-        if (ref.current.innerText !== value) {
-            ref.current.innerText = value;
+
+        // update the text if it has changed
+        if (ref.current.value !== value) {
+            ref.current.value = value;
         }
     }, [ref, value]);
 
+    // apply the initial test when the component is mounted (uncontrolled mode)
+    useEffect(() => {
+        // check if reference is initialized
+        if (!isElementInitialized(ref.current)) {
+            return;
+        }
+
+        // don't update if initial value is undefined
+        if (initialValue === undefined) {
+            return;
+        }
+
+        // update the text if it deviates from the initial value
+        if (ref.current.value !== initialValue) {
+            ref.current.value = initialValue;
+        }
+
+        // NOTE: do not add initialValue to the dependency list
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [ref]);
+
     // propagate value changes
     const onInternalInput = useCallback(
-        (event: FormEvent<HTMLDivElement>) => {
-            // check if reference is available
-            if (!ref.current) {
-                console.error(
-                    "unstyled-textarea-autosize: unexpected null ref"
-                );
+        (event: FormEvent<UnstyledTextareaAutosizeElement>) => {
+            // check if reference is initialized
+            if (!isElementInitialized(ref.current)) {
                 return;
             }
 
             // propagate the value change
-            const newValue = ref.current.innerText;
+            const newValue = ref.current.value;
             if (newValue !== value && onValueChange) {
                 onValueChange(newValue);
             }
@@ -70,15 +136,23 @@ export const UnstyledTextareaAutosize = forwardRef<
 
     // prevent formatting shortcuts
     const onInternalKeyDown = useCallback(
-        (event: KeyboardEvent<HTMLDivElement>) => {
+        (event: KeyboardEvent<UnstyledTextareaAutosizeElement>) => {
+            // check if reference is initialized
+            if (!isElementInitialized(ref.current)) {
+                return;
+            }
+
             // block formatting shortcuts
             if (
                 (event.ctrlKey || event.metaKey) &&
                 INVALID_CTRL_KEYS.includes(event.key)
             ) {
                 event.preventDefault();
-            } else if (event.key === "Escape") {
-                ref.current?.blur();
+            }
+
+            // blur on escape
+            if (event.key === "Escape") {
+                ref.current.blur();
             }
 
             // call outer onKeyDown handler for full transparency
@@ -86,7 +160,7 @@ export const UnstyledTextareaAutosize = forwardRef<
                 onKeyDown(event);
             }
         },
-        [onKeyDown]
+        [ref, onKeyDown]
     );
 
     // render the div element

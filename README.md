@@ -45,8 +45,17 @@ export function Example({
 The component accepts all properties of the intrinsic `div` component, including the `style` and `className` properties. In addition, it accepts the following properties:
 
 -   `readOnly?: boolean`: Content cannot be edited if set to `true`.
--   `value?: string`: The current content value of the text component.
+-   `value?: string`: The current content value of the text component (controlled mode).
+-   `initialValue?: string`: The initial content value of the text component (uncontrolled mode).
 -   `onValueChange?: (value: string) => void`: A callback function that is called each time the user edits the content.
+
+## Attributes
+
+A reference to the component provides all attributes of the intrinsic `div` DOM element. In addition, it provides the following attribute:
+
+-   `value: string`: The current content value of the text component.
+
+Please use the exported type `UnstyledTextareaAutosizeElement` for the reference.
 
 ## License
 

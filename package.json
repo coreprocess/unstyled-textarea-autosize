@@ -1,6 +1,6 @@
 {
     "name": "unstyled-textarea-autosize",
-    "version": "1.0.4",
+    "version": "1.0.5",
     "description": "An unstyled multi-line text component for React that adapts to its content.",
     "main": "dist/index.js",
     "module": "dist/index.js",
@@ -45,6 +45,6 @@
         "/dist"
     ],
     "dependencies": {
-        "use-ref-with-forwarding": "^1.0.1"
+        "use-ref-with-forwarding": "^1.0.5"
     }
 }
