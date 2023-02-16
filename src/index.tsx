@@ -8,7 +8,7 @@ import React, {
 } from "react";
 import { useRefWithForwarding } from "use-ref-with-forwarding";
 
-const VALID_CTRL_KEYS = ["c", "v", "x", "z", "r", "ArrowLeft", "ArrowRight"];
+const INVALID_CTRL_KEYS = ["b", "i", "u"];
 
 export type UnstyledTextareaAutosizeProps = ComponentProps<"div"> & {
     readOnly?: boolean;
@@ -74,9 +74,11 @@ export const UnstyledTextareaAutosize = forwardRef<
             // block formatting shortcuts
             if (
                 (event.ctrlKey || event.metaKey) &&
-                !VALID_CTRL_KEYS.includes(event.key)
+                INVALID_CTRL_KEYS.includes(event.key)
             ) {
                 event.preventDefault();
+            } else if (event.key === "Escape") {
+                ref.current?.blur();
             }
 
             // call outer onKeyDown handler for full transparency
