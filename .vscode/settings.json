@@ -9,12 +9,7 @@
     },
     "prettier.enable": true,
     "prettier.tabWidth": 4,
-    "eslint.validate": [
-        "javascript",
-        "javascriptreact",
-        "typescript",
-        "typescriptreact"
-    ],
+    "eslint.validate": ["javascript", "javascriptreact", "typescript", "typescriptreact"],
     "eslint.packageManager": "yarn",
     "css.validate": true,
     "scss.validate": true,
