@@ -62,7 +62,7 @@ export const UnstyledTextareaAutosize = forwardRef<
             return;
         }
 
-        // don"t update if value is undefined
+        // don't update if value is undefined
         if (value === undefined) {
             return;
         }
@@ -80,7 +80,7 @@ export const UnstyledTextareaAutosize = forwardRef<
             return;
         }
 
-        // don"t update if initial value is undefined
+        // don't update if initial value is undefined
         if (initialValue === undefined) {
             return;
         }
@@ -104,14 +104,12 @@ export const UnstyledTextareaAutosize = forwardRef<
 
             // propagate the value change
             const newValue = ref.current.value;
-            if (newValue !== value && onValueChange) {
-                onValueChange(newValue);
+            if (newValue !== value) {
+                onValueChange?.(newValue);
             }
 
             // call outer onInput handler for full transparency
-            if (onInput) {
-                onInput(event);
-            }
+            onInput?.(event);
         },
         [ref, value, onValueChange, onInput]
     );
@@ -129,16 +127,14 @@ export const UnstyledTextareaAutosize = forwardRef<
                 event.preventDefault();
             }
 
-            // blur on escape
+            // blur on escape and unselect all text
             if (event.key === 'Escape') {
                 ref.current.blur();
                 getSelection()?.removeAllRanges();
             }
 
             // call outer onKeyDown handler for full transparency
-            if (onKeyDown) {
-                onKeyDown(event);
-            }
+            onKeyDown?.(event);
         },
         [ref, onKeyDown]
     );
@@ -147,9 +143,9 @@ export const UnstyledTextareaAutosize = forwardRef<
     return (
         <div
             {...props}
+            ref={ref}
             data-placeholder={placeholder}
             className={`${className ?? ''} unstyled-textarea-autosize`}
-            ref={ref}
             contentEditable={!readOnly}
             onInput={onInternalInput}
             onKeyDown={onInternalKeyDown}
